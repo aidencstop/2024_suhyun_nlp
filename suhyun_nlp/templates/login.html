@@ -1,0 +1,27 @@
+{% extends 'header.html' %}
+{% block login %}
+<body id="login">
+
+  <div class="login-container">
+    <a href="/" class="home-icon">
+      <i class="bi bi-house-door"></i>
+    </a>
+    <h3>Login</h3>
+    <form action="{% url 'to-login' %}" method="POST">
+    {% csrf_token %}
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input name="email" type="email" class="form-control" id="email" placeholder="Enter your email">
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input name="password" type="password" class="form-control" id="password" placeholder="Enter your password">
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+    <p class="form-text mt-3">Don't have an account? <a href="{% url 'to-signup' %}">Register here</a></p>
+  </div>
+
+</body>
+{% endblock %}
+</html>

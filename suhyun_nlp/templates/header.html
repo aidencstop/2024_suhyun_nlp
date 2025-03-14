@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta property="og:image" content="../static/img/my.png">
+
+  <title>WeWrite</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  {% load static %}
+  <!-- Favicons -->
+  <link href="{% static 'img/book.png' %}" rel="icon">
+  <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;700&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+        <header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container d-flex justify-content-between">
+
+      <div class="logo">
+        <h1><a href="{% url 'to-main' %}">WeWrite</a></h1>
+      </div>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto" href="{% url 'to-read' %}">Read</a></li>
+
+          <li><a class="nav-link scrollto" href="{% url 'to-main' %}">Write</a></li>
+
+          {% if isAdmin %}
+          <li><a class="nav-link scrollto" href="{% url 'to-inprogress' %}">Admin</a></li>
+          <!-- TODO: my page 화면 생성되면 여기 else문으로 my page로 가는 버튼 추가하여야 함-->
+          {% endif %}
+
+          {% if isAdmin %}
+          <li><a class="nav-link scrollto" href="{% url 'to-genremanagement' %}">Add</a></li>
+          {% endif %}
+
+          {% if isLogin %}
+            <li><a class="nav-link scrollto" href="{% url 'to-logout' %}">Logout</a></li>
+          {% else %}
+            <li><a class="nav-link scrollto" href="{% url 'to-login' %}">Login</a></li>
+          {% endif %}
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+<body>
+{% block index %}
+{% endblock %}
+
+{% block login %}
+{% endblock %}
+
+{% block signup %}
+{% endblock %}
+
+{% block write %}
+{% endblock %}
+
+{% block read %}
+{% endblock %}
+
+{% block board %}
+{% endblock %}
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+  <!-- Template Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>

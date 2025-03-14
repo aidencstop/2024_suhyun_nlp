@@ -1,0 +1,227 @@
+{% extends 'header.html' %}
+{% block index %}
+  <!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex flex-column justify-content-center align-items-center">
+  <div class="container text-center text-md-left">
+    <h1 data-aos="zoom-out-up" >Together WeWrite</h1>
+    <h2 data-aos="zoom-out-down" >Your Imagination, Our Story</h2>
+      <div class="mt-4" data-aos="fade-up" data-aos-delay="500">
+      <a href="#about" class="btn btn-primary btn-lg">Learn More</a>
+    </div>
+  </div>
+</section><!-- End Hero -->
+<section id="about" class="py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6" data-aos="fade-right">
+        <h2>About WeWrite</h2>
+        <p class="text-justify">WeWrite is a platform where anyone can unleash their imagination and freely express their thoughts and emotions through writing. Users can choose their preferred genre, and each story is divided into five parts: exposition, rising action, climax, falling action, and resolution. When one user writes the exposition, another user continues with the next section, creating a collaborative writing experience.</p>
+        <p class="text-justify">For users with physical disabilities, all stories are converted into audiobooks and are available in both English and Korean. This feature helps both writers and readers, regardless of any limitations they may have, to transcend the boundaries of creativity and experience a sense of connection with others.</p>
+      </div>
+      <div class="col-md-6 text-center" data-aos="fade-left">
+        <img src="https://source.unsplash.com/600x400/?writing,books" alt="About WeWrite" class="img-fluid rounded">
+      </div>
+    </div>
+  </div>
+</section>
+<section id="highlights" class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-5">Highlights</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="highlight-card text-center p-4">
+          <i class="bi bi-check-circle display-4 text-primary mb-3"></i>
+          <h5 class="fw-bold">Select</h5>
+          <p class="text-muted">
+            You don’t need to read the entire story from the beginning - simply browse a concise summary of the previous parts, then choose the story and section you’d like to contribute to.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="highlight-card text-center p-4">
+          <i class="bi bi-people display-4 text-primary mb-3"></i>
+          <h5 class="fw-bold">Collaborate</h5>
+          <p class="text-muted">
+            Unleash your imagination and continue the story in a way that flows naturally from the previous part, working together with others to create ‘our’ story.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="highlight-card text-center p-4">
+          <i class="bi bi-play-circle display-4 text-primary mb-3"></i>
+          <h5 class="fw-bold">Immerse</h5>
+          <p class="text-muted">
+            Whether the story is in English or Korean, and no matter the reader’s abilities, everyone can enjoy new stories through both sight and sound.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="statistics" class="py-5">
+
+<div class="container mt-4">
+      <h2 class="text-center mb-5">Statistics</h2>
+
+    <div class="row">
+
+      <div class="col-md-6">
+        <div class="chart-container">
+          <div class="chart-header">Genre Ratio</div>
+          <canvas id="genreRatioChart"></canvas>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-container">
+          <div class="chart-header">Sentiment Ratio</div>
+          <canvas id="sentimentRatioChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="chart-container">
+          <div class="chart-header">Most Used Words</div>
+          <canvas id="mostUsedWordsChart"></canvas>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="chart-container">
+          <div class="chart-header">Most Read Novels (Top 5)</div>
+          <canvas id="mostReadNovelsChart"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="chart-container">
+          <div class="chart-header">Most Contributed Authors (Top 5)</div>
+          <canvas id="mostContributedAuthorsChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const genreRatioCtx = document.getElementById('genreRatioChart').getContext('2d');
+    new Chart(genreRatioCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Fantasy', 'Romance', 'Thriller', 'Sci-Fi', 'Others'],
+        datasets: [{
+          data: [30, 25, 20, 15, 10],
+          backgroundColor: ['#4e79a7', '#f28e2b', '#e15759', '#76b7b2', '#59a14f'],
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+        },
+      },
+    });
+
+    const sentimentRatioCtx = document.getElementById('sentimentRatioChart').getContext('2d');
+    new Chart(sentimentRatioCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Positive', 'Negative', 'Neutral'],
+        datasets: [{
+          data: [50, 20, 30],
+          backgroundColor: ['#59a14f', '#e15759', '#f28e2b'],
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+        },
+      },
+    });
+
+    const mostUsedWordsCtx = document.getElementById('mostUsedWordsChart').getContext('2d');
+    new Chart(mostUsedWordsCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Love', 'Adventure', 'Hero', 'Mystery', 'Dream'],
+        datasets: [{
+          label: 'Word Frequency',
+          data: [100, 80, 60, 50, 40],
+          backgroundColor: '#4e79a7',
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+
+    const mostReadNovelsCtx = document.getElementById('mostReadNovelsChart').getContext('2d');
+    new Chart(mostReadNovelsCtx, {
+      type: 'horizontalBar',
+      data: {
+        labels: ['Novel A', 'Novel B', 'Novel C', 'Novel D', 'Novel E'],
+        datasets: [{
+          label: 'Readers',
+          data: [500, 400, 300, 200, 100],
+          backgroundColor: '#76b7b2',
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+
+    const mostContributedAuthorsCtx = document.getElementById('mostContributedAuthorsChart').getContext('2d');
+    new Chart(mostContributedAuthorsCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Author A', 'Author B', 'Author C', 'Author D', 'Author E'],
+        datasets: [{
+          label: 'Contributions',
+          data: [50, 40, 35, 30, 25],
+          backgroundColor: '#f28e2b',
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  </script>
+</body>
+{% endblock %}
+</html>

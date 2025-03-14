@@ -1,0 +1,212 @@
+{% extends 'header.html' %}
+{% block read %}
+    <title>Genre Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .genre-container {
+            margin-top: 120px;
+        }
+
+        .genre-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .genre-list {
+            list-style-type: none;
+            padding: 0;
+            margin-bottom: 15px;
+        }
+
+        .genre-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            font-size: 1rem;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+        .add-btn {
+            background-color: #3478f6;
+            color: white;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            width: 100px;
+        }
+
+        .add-btn:hover {
+            background-color: #245bb5;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .genre-input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        .file-upload {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-upload input {
+            flex-grow: 1;
+        }
+
+        .file-select-btn {
+            background-color: #6c757d;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .file-select-btn:hover {
+            background-color: #5a6268;
+        }
+
+    </style>
+
+    <div class="container genre-container">
+        <h3 class="text-center fw-bold">Genre Management</h3>
+
+        <div class="row mt-4">
+            <!-- Current List -->
+            <div class="col-md-5">
+                <form action="{% url 'to-delete-genre' %}" method="POST">
+                {% csrf_token %}
+                <div class="genre-card">
+                    <h5 class="fw-bold">Current List</h5>
+                    <ul class="genre-list" id="genreList">
+                        <!--TODO: 장르별 색 등 디자인이 generic하지 않음-->
+                        {% for genre in active_genres %}
+                        <li><span style="color: orange;">{{ genre.name }}</span> <input type="checkbox" id="genre_delete_check" name="genre_delete_check" value="{{ genre.pk }}"></li>
+                        {% endfor %}
+<!--                        <li><span style="color: orange;">Fiction</span> <input type="checkbox"></li>-->
+<!--                        <li><span style="color: green;">Science Fiction</span> <input type="checkbox"></li>-->
+<!--                        <li><span style="color: brown;">Historical Fiction</span> <input type="checkbox"></li>-->
+<!--                        <li><span style="color: blue;">Fantasy</span> <input type="checkbox"></li>-->
+<!--                        <li><span style="color: darkblue;">Mystery</span> <input type="checkbox"></li>-->
+<!--                        <li><span style="color: purple;">Romance</span> <input type="checkbox"></li>-->
+                    </ul>
+<!--                    <button class="delete-btn" onclick="deleteSelectedGenres()">-->
+                    <button class="delete-btn" type="submit">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </div>
+                </form>
+            </div>
+
+            <!-- Add New Genre -->
+            <div class="col-md-6">
+                <form action="{% url 'to-add-genre' %}" method="POST">
+                {% csrf_token %}
+                <div class="genre-card">
+                    <h5 class="fw-bold">Add New Genre</h5>
+
+                    <div class="form-group">
+                        <label><strong>Genre:</strong></label>
+                        <input type="text" id="genreInput" class="genre-input" name="name" placeholder="Enter genre name">
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Image:</strong></label>
+                        <div class="file-upload">
+                            <input type="text" class="genre-input" placeholder="Upload image file (000 x 00)" readonly>
+                            <button class="file-select-btn">Select</button>
+                        </div>
+                    </div>
+
+                    <button class="add-btn" onclick="addGenre()">Add</button>
+                </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function addGenre() {
+            let genreName = document.getElementById("genreInput").value.trim();
+
+            if (genreName === "") {
+                alert("Genre name cannot be empty.");
+                return;
+            }
+
+            let genreList = document.getElementById("genreList");
+            let existingGenres = Array.from(genreList.children).map(li => li.innerText.trim().toLowerCase());
+
+            if (existingGenres.includes(genreName.toLowerCase())) {
+                alert("This genre already exists.");
+                return;
+            }
+
+            let randomColor = getRandomColor();
+            let newGenre = document.createElement("li");
+            newGenre.innerHTML = `<span style="color: ${randomColor};">${genreName}</span> <input type="checkbox">`;
+            genreList.appendChild(newGenre);
+
+            document.getElementById("genreInput").value = "";
+        }
+
+        function deleteSelectedGenres() {
+            let genreList = document.getElementById("genreList");
+            let checkboxes = genreList.querySelectorAll("input[type='checkbox']:checked");
+
+            if (checkboxes.length === 0) {
+                alert("Please select at least one genre to delete.");
+                return;
+            }
+
+            checkboxes.forEach(checkbox => {
+                let parentLi = checkbox.parentElement;
+                parentLi.remove();
+            });
+        }
+
+        function getRandomColor() {
+            let letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+
+{% endblock %}

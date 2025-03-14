@@ -1,0 +1,156 @@
+{% extends 'header.html' %}
+{% block board %}
+    <title>WeWrite - User Posts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+            margin-top: 70px;
+        }
+        .filter-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .fakebutton {
+            padding: 10px 15px;
+            background-color: #cccccc;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .post-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .post-title-container {
+            display: flex;
+            align-items: center;
+        }
+        .post-title {
+            font-weight: bold;
+            font-size: 18px;
+            margin-right: 10px; /* Space between title and date */
+        }
+        .post-date {
+            font-size: 14px;
+            color: #888;
+        }
+        .post-content {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .category {
+            font-size: 14px;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+        }
+        .genre {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background-color: white;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 5px 10px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
+
+            border-radius: 5px;
+        }
+        .rising-action { color: darkgray; }
+        .resolution { color: darkgray; }
+        .climax { color: darkgray; }
+        .science-fiction { background-color: white; color: #4caf50; }
+        .fantasy { background-color: white; color: #673ab7; }
+        .fiction { background-color: white; color: #ff9800; }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <select class="filter-select">
+            <option value="all">All</option>
+            <option value="science-fiction">Science Fiction</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="fiction">Fiction</option>
+        </select>
+        {% if new_story_available == True %}
+            <a class="button" href="{% url 'to-write' %}">Start New Story</a>
+        {% endif %}
+        {% if new_story_available == False %}
+            <a class="fakebutton">Start New Story</a>
+        {% endif %}
+    </div>
+
+    {% for story, exposition, pk, genre, title, last_part in story_tuple_list %}
+    <a href="{% url 'to-collaborate' pk %}" style="text-decoration:none;">
+        <div class="post-card">
+            {% if genre.name == 'fiction' %}
+            <span class="genre fiction">{{ genre.name }}</span>
+            {% endif %}
+            {% if genre.name == 'science fiction' %}
+            <span class="genre science-fiction">{{ genre.name }}</span>
+            {% endif %}
+            {% if genre.name == 'fantasy' %}
+            <span class="genre fantasy">{{ genre.name }}</span>
+            {% endif %}
+            <div class="post-header">
+                <div class="post-title-container">
+                    <span class="post-title">{{ title }}</span>
+                    <span class="post-date">{{ story.started_date }}</span>
+                </div>
+            </div>
+            <div class="post-content">
+                {{ exposition }}
+            </div>
+            <span class="category rising-action">{{ last_part }}</span>
+        </div>
+    </a>
+    {% endfor %}
+
+
+</body>
+{% endblock %}
+</html>
